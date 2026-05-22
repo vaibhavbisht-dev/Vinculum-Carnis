@@ -19,6 +19,7 @@ public class GeigerCounterManager : MonoBehaviour
     [Tooltip("Controls the tension. 0 is at the source, 1 is at maxDistance. Bow the line downward to make it tick faster earlier.")]
     [SerializeField] private AnimationCurve responseCurve = AnimationCurve.Linear(0, 0, 1, 1);
 
+    public Transform CurrentRadiationSource() { return radiationSource; }
     // Internal state
     private float nextClickTime;
 
@@ -35,11 +36,12 @@ public class GeigerCounterManager : MonoBehaviour
         {
             Instance = this;
         }
+        VBHelpers.InitRandom();
     }
 
     private void Start()
     {
-        IsActive = !IsActive;
+        IsActive = false;
 
         if (UIManager.Instance != null)
         {
