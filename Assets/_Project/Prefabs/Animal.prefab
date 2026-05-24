@@ -11,8 +11,7 @@ GameObject:
   - component: {fileID: 1371831382417369069}
   - component: {fileID: 8924954700576986806}
   - component: {fileID: 6540779323329157017}
-  - component: {fileID: 8991287559349742829}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -91,27 +90,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &8991287559349742829
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8671786709222660852}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &9206158080848163343
 GameObject:
   m_ObjectHideFlags: 0
@@ -124,7 +102,9 @@ GameObject:
   - component: {fileID: 4310701893381633655}
   - component: {fileID: 1469907786065597859}
   - component: {fileID: 6880917469558593133}
-  m_Layer: 0
+  - component: {fileID: 6514151064008831815}
+  - component: {fileID: 2105056193868248069}
+  m_Layer: 7
   m_Name: Animal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -185,6 +165,12 @@ MonoBehaviour:
   health: 100
   defaultBloodValue: 50
   deadBloodValue: 20
+  animalLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
+  interactableLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!114 &6880917469558593133
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201,4 +187,41 @@ MonoBehaviour:
   incapacitatedTime: 10
   speed: 7
   bleedingSpeed: 5
+  isIncapacitatedTimerActive: 1
+  destinationSpreadRadius: 3
   agent: {fileID: 0}
+--- !u!114 &6514151064008831815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9206158080848163343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcefa70bcf15fc647b49379c329c1eeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PickUpAnimal
+  m_Animal: {fileID: 0}
+  m_AnimalAI: {fileID: 0}
+--- !u!65 &2105056193868248069
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9206158080848163343}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0.5, z: 0}

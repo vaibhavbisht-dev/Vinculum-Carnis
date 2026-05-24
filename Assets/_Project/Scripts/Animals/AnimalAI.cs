@@ -6,12 +6,14 @@ using UnityEngine.AI;
 public class AnimalAI : MonoBehaviour
 {
     [SerializeField] private Animal m_Animal;
+    
 
     [Header("Timers & Speeds")]
     //[SerializeField] private float bleedingTime = 5f;
     [SerializeField] private float incapacitatedTime = 10f;
     [SerializeField] private float speed = 7f;
     [SerializeField] private float bleedingSpeed = 5f;
+    [SerializeField] private bool isIncapacitatedTimerActive = true;
 
     [Header("Pathfinding Adjustments")]
     [Tooltip("How far around the target location the animal can wander to prevent stacking.")]
@@ -59,20 +61,36 @@ public class AnimalAI : MonoBehaviour
         switch (newState)
         {
             case AnimalState.Alive:
-                agent.speed = speed;
-                agent.isStopped = false;
-                SetNewDestination();
+                // Added safety check
+                if (agent.isActiveAndEnabled && agent.isOnNavMesh)
+                {
+                    agent.speed = speed;
+                    agent.isStopped = false;
+                }
+                SetNewDestination(); // Note: SetNewDestination already has its own safety check inside it!
                 break;
 
             case AnimalState.Bleeding:
-                agent.speed = bleedingSpeed;
-                agent.isStopped = false;
+                // Added safety check
+                if (agent.isActiveAndEnabled && agent.isOnNavMesh)
+                {
+                    agent.speed = bleedingSpeed;
+                    agent.isStopped = false;
+                }
                 SetNewDestination();
                 break;
 
             case AnimalState.InCapacitated:
+                // Added safety check (This is what caused Line 76 to throw the error)
+                if (agent.isActiveAndEnabled && agent.isOnNavMesh)
+                {
+                    agent.isStopped = true;
+                }
+                break;
+
             case AnimalState.OnSacrifice:
             case AnimalState.Dead:
+                // You already had the safety check here!
                 if (agent.isActiveAndEnabled && agent.isOnNavMesh)
                 {
                     agent.isStopped = true;
@@ -126,16 +144,24 @@ public class AnimalAI : MonoBehaviour
 
     private void OnIncapacitated()
     {
+        if(!isIncapacitatedTimerActive) return;
         stateTimer += Time.deltaTime;
         if (stateTimer >= incapacitatedTime)
         {
             m_Animal.ChangeState(AnimalState.Dead);
         }
     }
+    public void StartIncapacitatedTimer() { 
+        isIncapacitatedTimerActive = true;
+    }
 
+    public void StopIncapacitatedTimer() {
+        isIncapacitatedTimerActive = false;
+    }
     private void OnSacrifice()
     {
         // Logic for when the player picks up the animal/harvests it
+        
     }
 
     private IEnumerator WaitTimerToFetchNewDestination(float waitTime)
